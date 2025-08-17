@@ -1,39 +1,26 @@
-const Project = require("../models/projectModel");
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
 
-// GET ALL PROJECTS
-async function getAllProjects() {
-  return await Project.find();
-}
+const projectRoutes = require("./routes/projectRoutes");
 
-// GET PROJECT BY ID
-async function getProjectById(id) {
-  return await Project.findById(id);
-}
+const app = express();
 
-// ADD NEW PROJECT
-async function addProject({ name, description, status }) {
-  const project = new Project({ name, description, status });
-  return await project.save();
-}
+// MIDDLEWARE
+app.use(cors());
+app.use(express.json());
 
-// UPDATE PROJECT
-async function updateProject(id, { name, description, status }) {
-  return await Project.findByIdAndUpdate(
-    id,
-    { name, description, status },
-    { new: true }
-  );
-}
+// ROUTES
+app.use("/api/projects", projectRoutes);
 
-// DELETE PROJECT
-async function deleteProject(id) {
-  return await Project.findByIdAndDelete(id);
-}
+// ROOT ENDPOINT (OPTIONAL – FOR TESTING)
+app.get("/", (req, res) => {
+  res.send("BOOTCAMP PROJECT TRACKER API IS RUNNING 🚀");
+});
 
-module.exports = {
-  getAllProjects,
-  getProjectById,
-  addProject,
-  updateProject,
-  deleteProject,
-};
+const PORT = process.env.PORT || 3000;
+const APP_NAME = process.env.APP_NAME || "APP";
+
+app.listen(PORT, () => {
+  console.log(`${APP_NAME} IS RUNNING ON PORT ${PORT}`);
+});

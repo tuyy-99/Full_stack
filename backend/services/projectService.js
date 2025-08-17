@@ -1,13 +1,16 @@
 const projects = require("../data/projectsData");
 
+// GET ALL PROJECTS
 function getAllProjects() {
   return projects;
 }
 
+// GET ONE PROJECT
 function getProjectById(id) {
   return projects.find((p) => p.id === id) || null;
 }
 
+// ADD PROJECT
 function addProject({ name, description, status }) {
   const nextId = projects.length
     ? Math.max(...projects.map((p) => p.id)) + 1
@@ -17,6 +20,7 @@ function addProject({ name, description, status }) {
   return newProject;
 }
 
+// UPDATE PROJECT
 function updateProject(id, updates) {
   const idx = projects.findIndex((p) => p.id === id);
   if (idx === -1) return null;
@@ -24,6 +28,7 @@ function updateProject(id, updates) {
   return projects[idx];
 }
 
+// DELETE PROJECT
 function deleteProject(id) {
   const idx = projects.findIndex((p) => p.id === id);
   if (idx === -1) return false;

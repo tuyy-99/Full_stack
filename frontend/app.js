@@ -1,9 +1,9 @@
 const API_URL = "http://localhost:3000/api/projects";
 
 const projectsList = document.getElementById("projects-list");
-const projectForm  = document.getElementById("project-form");
-const submitBtn    = document.getElementById("submit-btn");
-const formTitle    = document.getElementById("form-title");
+const projectForm = document.getElementById("project-form");
+const submitBtn = document.getElementById("submit-btn");
+const formTitle = document.getElementById("form-title");
 
 let editingId = null;
 
@@ -25,11 +25,15 @@ function renderProjects(projects) {
     return;
   }
 
-  projectsList.innerHTML = projects.map(p => `
+  projectsList.innerHTML = projects
+    .map(
+      (p) => `
     <div class="project-card">
       <h3>${p.name}</h3>
       <p>${p.description}</p>
-      <div class="project-status ${p.status === "completed" ? "status-completed" : "status-ongoing"}">
+      <div class="project-status ${
+        p.status === "completed" ? "status-completed" : "status-ongoing"
+      }">
         ${p.status.charAt(0).toUpperCase() + p.status.slice(1)}
       </div>
 
@@ -38,14 +42,18 @@ function renderProjects(projects) {
         <button class="btn delete-btn" data-id="${p.id}">Delete</button>
       </div>
     </div>
-  `).join("");
+  `
+    )
+    .join("");
 
   // ATTACH BUTTON LISTENERS
-  document.querySelectorAll(".edit-btn").forEach(btn => {
+  document.querySelectorAll(".edit-btn").forEach((btn) => {
     btn.addEventListener("click", () => startEdit(btn.getAttribute("data-id")));
   });
-  document.querySelectorAll(".delete-btn").forEach(btn => {
-    btn.addEventListener("click", () => handleDelete(btn.getAttribute("data-id")));
+  document.querySelectorAll(".delete-btn").forEach((btn) => {
+    btn.addEventListener("click", () =>
+      handleDelete(btn.getAttribute("data-id"))
+    );
   });
 }
 
@@ -89,7 +97,7 @@ projectForm.addEventListener("submit", async (e) => {
   const payload = {
     name: formData.get("name").trim(),
     description: formData.get("description").trim(),
-    status: formData.get("status")
+    status: formData.get("status"),
   };
 
   if (!payload.name || !payload.description || !payload.status) {
@@ -102,7 +110,7 @@ projectForm.addEventListener("submit", async (e) => {
       const res = await fetch(`${API_URL}/${editingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("FAILED TO UPDATE PROJECT");
       resetFormMode();
@@ -110,11 +118,11 @@ projectForm.addEventListener("submit", async (e) => {
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("FAILED TO ADD PROJECT");
     }
-  fetchProjects();
+    fetchProjects();
   } catch (err) {
     alert(err.message);
   }
