@@ -7,6 +7,7 @@ const formTitle = document.getElementById("form-title");
 
 let editingId = null;
 
+// FETCH PROJECTS
 async function fetchProjects() {
   try {
     const res = await fetch(API_URL);
@@ -15,10 +16,11 @@ async function fetchProjects() {
     renderProjects(projects);
   } catch (err) {
     console.error(err);
-    projectsList.innerHTML = "<p>Failed to load projects.</p>";
+    projectsList.innerHTML = "<p>FAILED TO LOAD PROJECTS.</p>";
   }
 }
 
+// RENDER PROJECTS
 function renderProjects(projects) {
   if (!projects.length) {
     projectsList.innerHTML = "<p>No projects found.</p>";
@@ -36,17 +38,15 @@ function renderProjects(projects) {
       }">
         ${p.status.charAt(0).toUpperCase() + p.status.slice(1)}
       </div>
-
       <div class="actions">
-        <button class="btn edit-btn"   data-id="${p.id}">Edit</button>
-        <button class="btn delete-btn" data-id="${p.id}">Delete</button>
+        <button class="btn edit-btn" data-id="${p._id}">Edit</button>
+        <button class="btn delete-btn" data-id="${p._id}">Delete</button>
       </div>
     </div>
   `
     )
     .join("");
 
-  // ATTACH BUTTON LISTENERS
   document.querySelectorAll(".edit-btn").forEach((btn) => {
     btn.addEventListener("click", () => startEdit(btn.getAttribute("data-id")));
   });
@@ -57,6 +57,7 @@ function renderProjects(projects) {
   });
 }
 
+// START EDIT
 async function startEdit(id) {
   try {
     const res = await fetch(`${API_URL}/${id}`);
@@ -67,8 +68,7 @@ async function startEdit(id) {
     projectForm.elements["description"].value = project.description;
     projectForm.elements["status"].value = project.status;
 
-    // SET EDIT STATE
-    editingId = Number(id);
+    editingId = id;
     formTitle.textContent = "Edit Project";
     submitBtn.textContent = "Update Project";
   } catch (err) {
@@ -76,20 +76,20 @@ async function startEdit(id) {
   }
 }
 
-// DELETE A PROJECT BY ID
+// DELETE PROJECT
 async function handleDelete(id) {
-  if (!confirm("Are you sure you want to delete this project?")) return;
+  if (!confirm("ARE YOU SURE YOU WANT TO DELETE THIS PROJECT?")) return;
   try {
     const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
     if (!res.ok && res.status !== 204) throw new Error("FAILED TO DELETE");
     fetchProjects();
-    if (editingId === Number(id)) resetFormMode();
+    if (editingId === id) resetFormMode();
   } catch (err) {
     alert(err.message);
   }
 }
 
-// SUBMIT HANDLER: ADD OR UPDATE BASED ON editingId
+// SUBMIT FORM
 projectForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -106,7 +106,7 @@ projectForm.addEventListener("submit", async (e) => {
   }
 
   try {
-    if (editingId !== null) {
+    if (editingId) {
       const res = await fetch(`${API_URL}/${editingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -127,10 +127,14 @@ projectForm.addEventListener("submit", async (e) => {
     alert(err.message);
   }
 });
+
+// RESET FORM
 function resetFormMode() {
   projectForm.reset();
   editingId = null;
   formTitle.textContent = "Add New Project";
   submitBtn.textContent = "Add Project";
 }
+
+// INITIAL FETCH
 fetchProjects();

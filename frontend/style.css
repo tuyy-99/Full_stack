@@ -1,115 +1,34 @@
-body {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: #f0f4f8;
-  margin: 0;
-  padding: 24px;
-  color: #333;
-}
+body { 
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: #f0f4f8; margin: 0; padding: 24px; color: #333; }
 
-.container {
-  max-width: 780px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 10px;
-  padding: 28px 36px;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.08);
-}
+.container { max-width: 780px; margin: 0 auto; background: #fff; border-radius: 10px; padding: 28px 36px; box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
 
-h1 {
-  text-align: center;
-  margin: 0 0 20px 0;
-  color: #0a6bcd;
-}
+h1 { text-align: center; margin: 0 0 20px 0; color: #0a6bcd; }
 
-.project-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 28px;
-}
+.project-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
 
-.project-form h2 {
-  margin: 0 0 4px 0;
-  color: #0a5aa6;
-  font-size: 1.1rem;
-}
+.project-form h2 { margin: 0 0 4px 0; color: #0a5aa6; font-size: 1.1rem; }
 
-.project-form input,
-.project-form select {
-  padding: 12px 14px;
-  border: 1.5px solid #cfd8e3;
-  border-radius: 6px;
-  font-size: 1rem;
-}
+.project-form input, .project-form select { padding: 12px 14px; border: 1.5px solid #cfd8e3; border-radius: 6px; font-size: 1rem; }
 
-.project-form input:focus,
-.project-form select:focus {
-  outline: none;
-  border-color: #0a6bcd;
-}
+.project-form input:focus, .project-form select:focus { outline: none; border-color: #0a6bcd; }
 
-#submit-btn {
-  background: #0a6bcd;
-  color: #fff;
-  border: none;
-  padding: 12px 14px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-}
+#submit-btn { background: #0a6bcd; color: #fff; border: none; padding: 12px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; }
 #submit-btn:hover { background: #084f97; }
 
-.projects-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+.projects-list { display: flex; flex-direction: column; gap: 16px; }
 
-.project-card {
-  background: #eef5ff;
-  border-left: 5px solid #0a6bcd;
-  border-radius: 6px;
-  padding: 16px 16px 52px 16px;
-  position: relative;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-}
+.project-card { background: #eef5ff; border-left: 5px solid #0a6bcd; border-radius: 6px; padding: 16px 16px 52px 16px; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
 
-.project-card h3 {
-  margin: 0 0 6px 0;
-  color: #094170;
-}
+.project-card h3 { margin: 0 0 6px 0; color: #094170; }
 
-.project-status {
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 14px;
-  color: #fff;
-  display: inline-block;
-  font-size: 0.85rem;
-}
-
+.project-status { font-weight: 700; padding: 3px 10px; border-radius: 14px; color: #fff; display: inline-block; font-size: 0.85rem; }
 .status-ongoing { background: #f0ad4e; }
 .status-completed { background: #5cb85c; }
 
-.actions {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  display: flex;
-  gap: 8px;
-}
-
-.btn {
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
+.actions { position: absolute; right: 12px; bottom: 12px; display: flex; gap: 8px; }
+.btn { border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
 .edit-btn { background: #ffc107; color: #221; }
 .edit-btn:hover { filter: brightness(0.95); }
-
 .delete-btn { background: #e74c3c; color: #fff; }
 .delete-btn:hover { filter: brightness(0.95); }
