@@ -1,73 +1,60 @@
-const projectService = require("../services/projectService");
+const Project = require("../models/projectModels");
 
-// GET ALL PROJECTS
-const getProjects = (req, res) => {
-  const allProjects = projectService.getAllProjects();
-  res.json(allProjects);
-};
-
-// GET SINGLE PROJECT
-const getProject = (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id))
-    return res.status(400).json({ message: "INVALID PROJECT ID" });
-
-  const project = projectService.getProjectById(id);
-  if (!project) return res.status(404).json({ message: "PROJECT NOT FOUND" });
-
-  res.json(project);
-};
-
-// CREATE PROJECT
-const createProject = (req, res) => {
-  const { name, description, status } = req.body;
-  if (!name || !description || !status) {
-    return res.status(400).json({ message: "ALL FIELDS ARE REQUIRED" });
+const getProjects = async (req, res) => {
+  try {
+    const projects = await Project.find();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-  if (!["ongoing", "completed"].includes(status)) {
-    return res.status(400).json({
-      message: "STATUS MUST BE 'ongoing' OR 'completed'",
+};
+
+const getProjectById = async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) return res.status(404).json({ message: "Not found" });
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const createProject = async (req, res) => {
+  try {
+    const { name, description, status } = req.body;
+    const newProject = new Project({ name, description, status });
+    const saved = await newProject.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const updateProject = async (req, res) => {
+  try {
+    const updated = await Project.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
     });
+    if (!updated) return res.status(404).json({ message: "Not found" });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
-  const newProject = projectService.addProject({ name, description, status });
-  res.status(201).json(newProject);
 };
 
-// UPDATE PROJECT
-const updateProject = (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id))
-    return res.status(400).json({ message: "INVALID PROJECT ID" });
-
-  const { status } = req.body;
-  if (status && !["ongoing", "completed"].includes(status)) {
-    return res.status(400).json({
-      message: "STATUS MUST BE 'ongoing' OR 'completed'",
-    });
+const deleteProject = async (req, res) => {
+  try {
+    const deleted = await Project.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-
-  const updatedProject = projectService.updateProject(id, req.body);
-  if (!updatedProject)
-    return res.status(404).json({ message: "PROJECT NOT FOUND" });
-
-  res.json(updatedProject);
-};
-
-// DELETE PROJECT
-const deleteProject = (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id))
-    return res.status(400).json({ message: "INVALID PROJECT ID" });
-
-  const deleted = projectService.deleteProject(id);
-  if (!deleted) return res.status(404).json({ message: "PROJECT NOT FOUND" });
-
-  res.status(204).end();
 };
 
 module.exports = {
   getProjects,
-  getProject,
+  getProjectById,
   createProject,
   updateProject,
   deleteProject,
